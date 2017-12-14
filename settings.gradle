@@ -1,0 +1,6 @@
+rootProject.name = 'polybius'
+
+include 'pb-common-js'
+include 'pb-common-jvm'
+include 'pb-common'
+include 'pb-server'
