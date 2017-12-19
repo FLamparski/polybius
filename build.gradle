@@ -1,6 +1,6 @@
 allprojects {
     buildscript {
-        ext.kotlin_version = '1.2.0'
+        ext.kotlin_version = '1.2.10'
         ext.serialization_version = '0.3'
         ext.anko_version = '0.10.1'
         ext.retrofit_version = '2.3.0'
@@ -18,8 +18,7 @@ allprojects {
         dependencies {
             classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
             classpath "org.jetbrains.kotlinx:kotlinx-gradle-serialization-plugin:$serialization_version"
-            classpath("org.jetbrains.kotlinx:kotlinx-coroutines-core:0.12")
-            classpath 'com.google.gms:google-services:3.1.1'
+            classpath "org.jetbrains.kotlinx:kotlinx-coroutines-core:0.12"
         }
 
     }
