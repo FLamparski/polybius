@@ -1,6 +1,7 @@
 package polybius.common.platform
 
 external fun moment(str: String): dynamic = definedExternally
+external fun moment(): dynamic = definedExternally
 
 actual class DateTime {
     private val date: dynamic
@@ -11,5 +12,13 @@ actual class DateTime {
 
     actual constructor(isoString: String) {
         date = moment(isoString)
+    }
+
+    private constructor(d: Any) {
+        date = d
+    }
+
+    actual companion object {
+        actual fun now() = DateTime(moment())
     }
 }

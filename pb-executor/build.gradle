@@ -1,0 +1,53 @@
+buildscript {
+    ext.kotlin_version = '1.2.10'
+
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+version 'unspecified'
+
+apply plugin: 'kotlin2js'
+apply plugin: 'kotlin-dce-js'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(":pb-common-js")
+    compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
+}
+
+task copyKotlinJs(type: Copy, dependsOn: compileKotlin2Js) {
+    def workDir = "$buildDir/classes/kotlin/main/"
+    from(workDir) {
+        include "*.js"
+        include "*.js.map"
+    }
+    into "$buildDir/webext/js"
+}
+
+task copyVendorJs(type: Copy) {
+    from("$buildDir/resources/main/vendor") {
+        include "*.js"
+    }
+    into "$buildDir/webext/vendor"
+}
+
+task copyHtml(type: Copy, dependsOn: copyVendorJs) {
+    from("$buildDir/resources/main") {
+        include "*.html"
+        include "*.json"
+    }
+    into "$buildDir/webext"
+}
+
+task explodedWebExt {
+    dependsOn(copyKotlinJs, copyHtml)
+    shouldRunAfter 'build'
+}

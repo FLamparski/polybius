@@ -31,4 +31,4 @@ allprojects {
     }
 }
 
-defaultTasks ':pb-server:bootRun'
+defaultTasks ':pb-executor:explodedWebExt', ':pb-server:bootRun'

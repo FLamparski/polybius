@@ -1,0 +1,26 @@
+{
+  "applications": {
+    "gecko": {
+      "id": "pb-executor@polybius",
+      "strict_min_version": "42.0"
+    }
+  },
+
+  "background": {
+    "page": "background.html"
+  },
+
+  "content_security_policy": "script-src 'self' http://localhost:8080; object-src 'self'",
+
+  "default_locale": "en",
+
+  "description": "...",
+
+  "manifest_version": 2,
+
+  "name": "Polybius Executor",
+
+  "permissions": ["webNavigation"],
+
+  "version": "0.1"
+}
