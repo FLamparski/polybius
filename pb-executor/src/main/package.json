@@ -1,0 +1,14 @@
+{
+  "name": "pb-executor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "resources/manifest.json",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "web-ext": "^2.2.2"
+  }
+}

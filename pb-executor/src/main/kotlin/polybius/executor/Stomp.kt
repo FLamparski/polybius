@@ -4,7 +4,8 @@ import org.w3c.dom.WebSocket
 
 @JsName("Stomp")
 external object Stomp {
-    fun client(ws: WebSocket): StompClient = definedExternally
+    fun client(url: String, protocols: Array<String>): StompClient = definedExternally
+    fun over(ws: WebSocket): StompClient = definedExternally
 }
 
 external class SubscriptionHandle {

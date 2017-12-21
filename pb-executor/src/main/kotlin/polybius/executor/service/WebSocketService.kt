@@ -1,10 +1,11 @@
 package polybius.executor.service
 
 import org.w3c.dom.WebSocket
+import polybius.common.models.Message
 import polybius.executor.Stomp
 
 class WebSocketService(url: String = "ws://localhost:8080/ws/channel") {
-    private val client = Stomp.client(WebSocket(url))
+    private val client = Stomp.over(WebSocket(url))
 
     val isConnected
         get() = client.connected
@@ -14,7 +15,7 @@ class WebSocketService(url: String = "ws://localhost:8080/ws/channel") {
     }
 
     private fun onConnected() {
-        console.log("Connected!")
+        client.send("/app/executors", {}, JSON.stringify(Message.executorConnected("test")))
     }
 
     private fun onError(vararg args: Any?) {

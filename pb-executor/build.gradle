@@ -19,27 +19,36 @@ repositories {
 }
 
 dependencies {
-    implementation project(":pb-common-js")
+    compile project(":pb-common-js")
     compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
 }
 
-task copyKotlinJs(type: Copy, dependsOn: compileKotlin2Js) {
+compileKotlin2Js {
+    kotlinOptions {
+        sourceMap = true
+        sourceMapEmbedSources = "always"
+        moduleKind = 'plain'
+        metaInfo = false
+    }
+}
+
+task copyKotlinJs(group: 'build', type: Copy, dependsOn: compileKotlin2Js) {
     def workDir = "$buildDir/classes/kotlin/main/"
     from(workDir) {
-        include "*.js"
-        include "*.js.map"
+        include "*.js", "*.js.map"
+        include "dependencies/*.js", "dependencies/*.js.map"
     }
     into "$buildDir/webext/js"
 }
 
-task copyVendorJs(type: Copy) {
+task copyVendorJs(group: 'build', type: Copy) {
     from("$buildDir/resources/main/vendor") {
         include "*.js"
     }
     into "$buildDir/webext/vendor"
 }
 
-task copyHtml(type: Copy, dependsOn: copyVendorJs) {
+task copyHtml(group: 'build', type: Copy, dependsOn: copyVendorJs) {
     from("$buildDir/resources/main") {
         include "*.html"
         include "*.json"
@@ -47,7 +56,27 @@ task copyHtml(type: Copy, dependsOn: copyVendorJs) {
     into "$buildDir/webext"
 }
 
-task explodedWebExt {
-    dependsOn(copyKotlinJs, copyHtml)
+task explodedWebExt(group: 'build', dependsOn: [build, copyKotlinJs, copyHtml]) {
     shouldRunAfter 'build'
+}
+
+final def npmWorkDir = "$projectDir/src/main"
+
+task npmInstall(group: 'dev', type: Exec) {
+    workingDir npmWorkDir
+    commandLine 'npm', 'install'
+}
+
+task lintWebExt(group: 'check', type: Exec, dependsOn: [npmInstall, explodedWebExt]) {
+    workingDir "$buildDir/webext"
+    commandLine "$npmWorkDir/node_modules/.bin/web-ext", 'lint'
+}
+
+task runDevWebExt(group: 'dev', type: Exec, dependsOn: [lintWebExt]) {
+    workingDir "$buildDir/webext"
+    commandLine "$npmWorkDir/node_modules/.bin/web-ext", 'run'
+}
+
+afterEvaluate {
+    copyKotlinJs.dependsOn copyDependenciesKotlinJs
 }

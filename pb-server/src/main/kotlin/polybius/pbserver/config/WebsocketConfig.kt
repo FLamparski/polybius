@@ -15,6 +15,6 @@ class WebsocketConfig : AbstractWebSocketMessageBrokerConfigurer() {
     }
 
     override fun registerStompEndpoints(registry: StompEndpointRegistry?) {
-        registry?.addEndpoint("/ws/channel")
+        registry?.addEndpoint("/ws/channel")?.setAllowedOrigins("*")
     }
 }
