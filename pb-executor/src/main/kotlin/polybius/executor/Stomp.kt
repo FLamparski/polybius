@@ -1,6 +1,7 @@
 package polybius.executor
 
 import org.w3c.dom.WebSocket
+import polybius.common.models.Message
 
 @JsName("Stomp")
 external object Stomp {
@@ -14,6 +15,9 @@ external class SubscriptionHandle {
 }
 
 external class Frame {
+    val command: String
+    val headers: dynamic
+    val body: String
     override fun toString(): String = definedExternally
     fun ack(): Unit = definedExternally
     fun nack(): Unit = definedExternally
@@ -24,6 +28,13 @@ external class StompClient(ws: WebSocket) {
     fun connect(vararg args: Any?): Unit = definedExternally
     fun disconnect(callback: () -> Unit, headers: Any?): Unit = definedExternally
     fun send(destination: String, headers: Any?, body: Any?): Unit = definedExternally
-    fun subscribe(destination: String, callback: (Frame) -> Unit, headers: Any?): SubscriptionHandle = definedExternally
+    @JsName("subscribe")
+    fun _subscribe(destination: String, callback: (Frame) -> Unit, headers: Any?): SubscriptionHandle = definedExternally
     fun unsubscribe(id: String): Unit = definedExternally
 }
+
+fun StompClient.subscribe(destination: String, headers: Any? = null, callback: (Frame) -> Unit): SubscriptionHandle {
+    return this._subscribe(destination, callback, headers)
+}
+
+fun Frame.message() = JSON.parse<Message>(this.body)
