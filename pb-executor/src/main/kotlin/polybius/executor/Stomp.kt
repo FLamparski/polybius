@@ -1,7 +1,7 @@
 package polybius.executor
 
 import org.w3c.dom.WebSocket
-import polybius.common.models.Message
+import polybius.common.models.PolybiusMessage
 
 @JsName("Stomp")
 external object Stomp {
@@ -37,4 +37,4 @@ fun StompClient.subscribe(destination: String, headers: Any? = null, callback: (
     return this._subscribe(destination, callback, headers)
 }
 
-fun Frame.message() = JSON.parse<Message>(this.body)
+fun Frame.message() = JSON.parse<PolybiusMessage>(this.body)

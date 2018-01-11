@@ -1,11 +1,7 @@
 package polybius.pbserver.repo
 
 import org.springframework.stereotype.Repository
-import polybius.common.models.PlaybackState
-import polybius.common.models.ScheduleState
 import polybius.common.models.Task
-import polybius.common.models.TaskState
-import polybius.common.platform.DateTime
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.stream.Stream
@@ -14,7 +10,7 @@ import java.util.stream.Stream
 class TaskRepo {
     private val tasks = ConcurrentHashMap<String, Task>()
 
-    fun findById(id: String) = if (id in tasks) tasks[id] else null
+    fun findById(id: String) = if (tasks.containsKey(id)) tasks[id] else null
 
     fun getAllOrderByOrder(): Stream<Task> = tasks.values
             .stream()
@@ -22,17 +18,10 @@ class TaskRepo {
 
     fun getNext(): Optional<Task> = getAllOrderByOrder().findFirst()
 
-    fun save(userTask: Task): Task {
-        val id = UUID.randomUUID().toString()
-        val task = userTask.copy(id = id, submittedOn = DateTime.now(), state = defaultState())
-        tasks.put(id, task)
+    fun save(task: Task): Task {
+        tasks.put(task.id!!, task)
         return task
     }
 
-    private fun defaultState() = TaskState(
-            scheduleState = ScheduleState.SCHEDULED,
-            playbackState = PlaybackState.NOT_PLAYING,
-            duration = null,
-            position = null
-    )
+    fun delete(id: String) = tasks.remove(id)
 }
