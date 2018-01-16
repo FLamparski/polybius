@@ -1,0 +1,74 @@
+buildscript {
+    repositories {
+        jcenter()
+        google()
+        mavenCentral()
+        maven { url "http://dl.bintray.com/kotlin/kotlin-eap-1.2" }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.10"
+    }
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+repositories {
+    jcenter()
+    google()
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+    maven { url "http://dl.bintray.com/kotlin/kotlin-eap-1.2" }
+    maven { url "https://kotlin.bintray.com/kotlinx" }
+}
+android {
+    compileSdkVersion 27
+    buildToolsVersion "27.0.3"
+
+    defaultConfig {
+        applicationId "polybius.android"
+        minSdkVersion 25
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation project(':pb-common-jvm')
+
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:appcompat-v7:27.+'
+    compile 'com.android.support:design:27.+'
+    //compile "com.marcinmoskala.KotlinAndroidViewBindings:KotlinAndroidViewBindings:0.10"
+    compile 'com.marcinmoskala.activitystarter:activitystarter:1.11-beta'
+    compile 'com.marcinmoskala.activitystarter:activitystarter-kotlin:1.11-beta'
+    kapt 'com.marcinmoskala.activitystarter:activitystarter-compiler:1.11-beta'
+    compile 'com.github.marcinmoskala:kotlinpreferences:1.00'
+    testCompile 'junit:junit:4.12'
+}
+
+kotlin {
+    experimental {
+        coroutines "enable"
+    }
+}
+
+androidExtensions {
+    experimental = true
+}
