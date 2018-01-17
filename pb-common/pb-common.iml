@@ -16,8 +16,10 @@
       <configuration version="3" platform="Common (experimental) " useProjectSettings="false">
         <compilerSettings />
         <compilerArguments>
+          <option name="destination" value="$MODULE_DIR$/build/classes/kotlin/main" />
+          <option name="classpath" value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-serialization-runtime-common/0.3/cb82fc10b344c636e430629492ef517cc4024127/kotlinx-serialization-runtime-common-0.3.jar:/home/filip/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-common/1.2.10/f2486c4eaa67ca3036c3c04f91a9233eee3bf153/kotlin-stdlib-common-1.2.10.jar" />
           <option name="languageVersion" value="1.2" />
-          <option name="apiVersion" value="1.1" />
+          <option name="apiVersion" value="1.2" />
           <option name="pluginOptions">
             <array />
           </option>

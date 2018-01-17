@@ -55,11 +55,12 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:27.+'
     compile 'com.android.support:design:27.+'
-    //compile "com.marcinmoskala.KotlinAndroidViewBindings:KotlinAndroidViewBindings:0.10"
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.marcinmoskala.activitystarter:activitystarter:1.11-beta'
     compile 'com.marcinmoskala.activitystarter:activitystarter-kotlin:1.11-beta'
     kapt 'com.marcinmoskala.activitystarter:activitystarter-compiler:1.11-beta'
     compile 'com.github.marcinmoskala:kotlinpreferences:1.00'
+
     testCompile 'junit:junit:4.12'
 }
 

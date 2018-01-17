@@ -14,6 +14,7 @@
     </facet>
     <facet type="kotlin-language" name="Kotlin">
       <configuration version="3" platform="JVM 1.8" useProjectSettings="false">
+        <implements>pb-common</implements>
         <compilerSettings>
           <option name="additionalArguments" value="-Xmulti-platform" />
         </compilerSettings>
@@ -26,7 +27,7 @@
           <option name="addCompilerBuiltIns" value="true" />
           <option name="loadBuiltInsFromDependencies" value="true" />
           <option name="languageVersion" value="1.2" />
-          <option name="apiVersion" value="1.1" />
+          <option name="apiVersion" value="1.2" />
           <option name="pluginOptions">
             <array />
           </option>
@@ -55,6 +56,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="pb-common" />
     <orderEntry type="library" exported="" scope="PROVIDED" name="kotlin-stdlib-jre8-1.2.10" level="project" />
     <orderEntry type="library" exported="" scope="PROVIDED" name="kotlinx-serialization-runtime-0.3" level="project" />
     <orderEntry type="library" exported="" scope="PROVIDED" name="jackson-databind-2.9.2" level="project" />
