@@ -29,7 +29,7 @@ repositories {
 dependencies {
     expectedBy project(':pb-common')
 
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     compile "org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serialization_version"
     compile "com.fasterxml.jackson.core:jackson-databind:2.9.2"
 

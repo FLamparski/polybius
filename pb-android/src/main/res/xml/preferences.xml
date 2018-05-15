@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:key="pref_connection"
+        android:title="@string/settings_category_connection">
+        <EditTextPreference
+            android:layout_width="wrap_content"
+            android:defaultValue="10.100.0.4"
+            android:key="pref_server_address"
+            android:summary="@string/settings_server_description"
+            android:title="@string/settings_server" />
+    </PreferenceCategory>
+</PreferenceScreen>

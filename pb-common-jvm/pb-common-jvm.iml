@@ -57,10 +57,10 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="pb-common" />
-    <orderEntry type="library" exported="" scope="PROVIDED" name="kotlin-stdlib-jre8-1.2.10" level="project" />
+    <orderEntry type="library" exported="" scope="PROVIDED" name="kotlin-stdlib-jdk8-1.2.10" level="project" />
     <orderEntry type="library" exported="" scope="PROVIDED" name="kotlinx-serialization-runtime-0.3" level="project" />
     <orderEntry type="library" exported="" scope="PROVIDED" name="jackson-databind-2.9.2" level="project" />
-    <orderEntry type="library" exported="" scope="PROVIDED" name="kotlin-stdlib-jre7-1.2.10" level="project" />
+    <orderEntry type="library" exported="" scope="PROVIDED" name="kotlin-stdlib-jdk7-1.2.10" level="project" />
     <orderEntry type="library" exported="" scope="PROVIDED" name="kotlin-reflect-1.2.0" level="project" />
     <orderEntry type="library" exported="" scope="PROVIDED" name="kotlin-stdlib-1.2.10" level="project" />
     <orderEntry type="library" exported="" scope="PROVIDED" name="jackson-annotations-2.9.0" level="project" />
