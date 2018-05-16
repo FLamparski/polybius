@@ -1,9 +1,10 @@
 package polybius.android.api
 
+import okhttp3.OkHttpClient
 import org.koin.dsl.module.applicationContext
 
 val httpModule = applicationContext {
-//    bean { OkHttpClient() }
+    bean { OkHttpClient() }
 //    bean { JacksonConverterFactory.create() as Converter.Factory }
 //    bean {
 //        Retrofit.Builder()

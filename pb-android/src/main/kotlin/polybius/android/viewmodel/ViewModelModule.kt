@@ -7,5 +7,5 @@ import org.koin.dsl.module.applicationContext
  * Created by filip on 14/05/18.
  */
 val viewModelModule = applicationContext {
-    viewModel { PlaybackControlViewModel() }
+    viewModel { PlaybackControlViewModel(get()) }
 }

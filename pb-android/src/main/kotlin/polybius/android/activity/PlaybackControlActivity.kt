@@ -9,8 +9,10 @@ import android.view.Menu
 import android.view.MenuItem
 import org.koin.android.architecture.ext.viewModel
 import polybius.android.R
+import polybius.android.kextensions.createIntent
 import polybius.android.kextensions.observe
 import polybius.android.kextensions.tag
+import polybius.android.service.PolybiusService
 import polybius.android.ui.TaskListAdapter
 import polybius.android.viewmodel.PlaybackControlViewModel
 
@@ -21,6 +23,7 @@ class PlaybackControlActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.i(tag(this), "onCreate")
         setContentView(R.layout.activity_playback_control)
         setSupportActionBar(toolbar)
         listView.layoutManager = LinearLayoutManager(this)
@@ -28,6 +31,30 @@ class PlaybackControlActivity : BaseActivity() {
         viewModel.tasks.observe(this) { tasks ->
             Log.i(tag(this), "Got new tasks: ${tasks.toString()}")
             listView.adapter = TaskListAdapter(tasks!!)
+        }
+
+        viewModel.isConnected.observe(this) { isConnected ->
+            Log.i(tag(this), "isConnected: $isConnected")
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.i(tag(this), "onResume; isConnected = " + viewModel.isConnected.value?.toString())
+        if (viewModel.isConnected.value == false) {
+            val intent = createIntent<PolybiusService>(this)
+            intent.action = PolybiusService.COMMAND_START
+            startService(intent)
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.i(tag(this), "onStop; isConnected = " + viewModel.isConnected.value?.toString())
+        if (viewModel.isConnected.value == true) {
+            val intent = createIntent<PolybiusService>(this)
+            intent.action = PolybiusService.COMMAND_STOP
+            startService(intent)
         }
     }
 

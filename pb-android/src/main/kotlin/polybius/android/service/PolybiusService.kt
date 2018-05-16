@@ -1,39 +1,86 @@
 package polybius.android.service
 
-import android.app.IntentService
+import android.app.Service
 import android.content.Intent
+import android.support.v4.app.NotificationCompat
 import android.util.Log
-import okhttp3.OkHttpClient
-import polybius.android.api.HttpApiService
-import polybius.android.kextensions.create
+import okhttp3.*
+import org.koin.android.ext.android.inject
 import polybius.android.kextensions.tag
-import retrofit2.Retrofit
-import retrofit2.converter.jackson.JacksonConverterFactory
+import polybius.android.repo.InMemoryStateRepository
 
 /**
  * Created by filip on 14/05/18.
  */
-class PolybiusService : IntentService("PolybiusService") {
-    lateinit var client: HttpApiService
+class PolybiusService : Service() {
+    private val httpClient : OkHttpClient by inject()
+    private val stateRepository : InMemoryStateRepository by inject()
+
+    private var webSocket : WebSocket? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Log.i(tag(this), "Starting")
-
-        client = Retrofit.Builder()
-                .baseUrl("http://10.100.0.103:8080")
-                .addConverterFactory(JacksonConverterFactory.create())
-                .client(OkHttpClient())
-                .build()
-                .create()
-
-
-        return super.onStartCommand(intent, flags, startId)
+        Log.i(tag(this), "onStartCommand (action = ${intent?.action}, flags = $flags, startId = $startId)")
+        handleIntent(intent)
+        return START_STICKY
     }
 
-    override fun onHandleIntent(intent: Intent?) {
-        intent!!
+    override fun onBind(intent: Intent?) = null
 
-        client.tasks().execute().body().orEmpty()
+    fun handleIntent(intent: Intent?) {
+        if (intent == null) {
+            return
+        }
+
+        Log.i(tag(this), "onHandleIntent (action = ${intent.action})")
+
+        when (intent.action) {
+            COMMAND_START -> {
+                startForeground(SERVICE_ID, notification())
+                stateRepository.isConnected.postValue(true)
+                webSocket = startWebsocket()
+            }
+            COMMAND_STOP -> {
+                stopForeground(true)
+                stopSelf()
+                stateRepository.isConnected.postValue(false)
+                webSocket?.close(1000, "goodbye!")
+            }
+            else -> {
+                Log.w(tag(this), "Unknown action: ${intent.action}")
+            }
+        }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.i(tag(this), "onDestroy")
+        stateRepository.isConnected.postValue(false)
+    }
+
+    private fun notification() = NotificationCompat.Builder(this, CHANNEL_ID)
+            .setOngoing(true)
+            .setContentTitle("Polybius")
+            .setContentText("Ongoing notification")
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .build()
+
+    private fun startWebsocket() = httpClient.newWebSocket(
+            Request.Builder().url("ws://demos.kaazing.com/echo").build(),
+            object : WebSocketListener() {
+                override fun onOpen(webSocket: WebSocket, response: Response) {
+                    webSocket.send("Hello")
+                }
+
+                override fun onMessage(webSocket: WebSocket, string: String) {
+                    Log.i(tag(this), "Websocket message: $string")
+                }
+            })
+
+    companion object {
+        private const val SERVICE_ID = 40875290
+        private const val CHANNEL_ID = "CHANNEL_DEFAULT_IMPORTANCE"
+
+        const val COMMAND_START = "START"
+        const val COMMAND_STOP = "STOP"
+    }
 }

@@ -3,16 +3,18 @@ package polybius.android.viewmodel
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.os.AsyncTask
+import polybius.android.repo.InMemoryStateRepository
 import polybius.common.models.Task
 import polybius.common.models.TaskState
 import polybius.common.models.TaskType
 import polybius.common.models.User
 import polybius.common.platform.DateTime
 
-class PlaybackControlViewModel(): ViewModel() {
+class PlaybackControlViewModel(stateRepository: InMemoryStateRepository): ViewModel() {
     private val u1 = User("user1", "device1")
 
     val tasks = MutableLiveData<List<Task>>()
+    val isConnected = stateRepository.isConnected
 
     init {
         AsyncTask.execute {

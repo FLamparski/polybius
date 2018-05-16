@@ -26,5 +26,7 @@
             android:parentActivityName=".activity.PlaybackControlActivity"
             android:label="@string/action_settings"
             android:theme="@style/AppTheme"/>
+
+        <service android:name=".service.PolybiusService" />
     </application>
 </manifest>
