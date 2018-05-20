@@ -4,6 +4,7 @@ import polybius.common.platform.DateTime
 data class Task (
         val id: String?,
         val order: Long,
+        val title: String,
         val submitter: User,
         val submittedOn: DateTime?,
         val type: TaskType,

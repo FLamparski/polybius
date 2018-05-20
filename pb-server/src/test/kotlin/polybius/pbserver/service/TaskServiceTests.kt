@@ -26,7 +26,7 @@ class TaskServiceTests(
         service.save(createTestTask())
         verify {
             msgTemplate.convertAndSend("/topic/tasks", assert<PolybiusMessage> {
-                LoggerFactory.getLogger(javaClass).info { "Got message: " + it }
+                LoggerFactory.getLogger(javaClass).info { "Got message: $it" }
                 it.messageType == MessageType.SERVER_TASK_ADDED
                         && it.task != null
                         && it.task!!.id != null
@@ -45,7 +45,7 @@ class TaskServiceTests(
         service.taskAccepted(task)
         verify {
             msgTemplate.convertAndSend("/topic/tasks", assert<PolybiusMessage> {
-                LoggerFactory.getLogger(javaClass).info { "Got message: " + it }
+                LoggerFactory.getLogger(javaClass).info { "Got message: $it" }
                 it.messageType == MessageType.EXECUTOR_TASK_ACCEPTED
                         && it.task != null
                         && it.task!!.id == task.id
@@ -66,7 +66,7 @@ class TaskServiceTests(
         assert(service.findById(task.id!!) == null)
         verify {
             msgTemplate.convertAndSend("/topic/tasks", assert<PolybiusMessage> {
-                LoggerFactory.getLogger(javaClass).info { "Got message: " + it }
+                LoggerFactory.getLogger(javaClass).info { "Got message: $it" }
                 it.messageType == MessageType.SERVER_TASK_REMOVED
                         && it.task != null
                         && it.task!!.id == task.id
@@ -97,7 +97,7 @@ class TaskServiceTests(
         service.taskPlaying(playingTask)
         verify {
             msgTemplate.convertAndSend("/topic/tasks", assert<PolybiusMessage> {
-                LoggerFactory.getLogger(javaClass).info { "Got message: " + it }
+                LoggerFactory.getLogger(javaClass).info { "Got message: $it" }
                 it.messageType == MessageType.EXECUTOR_TASK_PLAYING
                         && it.task == playingTask
             })
@@ -107,6 +107,7 @@ class TaskServiceTests(
     fun createTestTask() = Task(
             id = null,
             order = 1,
+            title = "Video title",
             type = TaskType.YOUTUBE,
             url = "https://youtube.com/watch?v=dQw4w9WgXcQ",
             submitter = User(

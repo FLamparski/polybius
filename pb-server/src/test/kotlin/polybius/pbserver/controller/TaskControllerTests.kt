@@ -72,7 +72,7 @@ class TaskControllerTests(
     @Test
     fun `Can remove a task`() {
         val task = restTemplate.postForEntity<Task>("/tasks/", createTestTask()).body
-        val id = task.id
+        val id = task!!.id
 
         restTemplate.delete("/tasks/$id")
         val res = restTemplate.getForEntity<Task>("/tasks/$id")
@@ -82,6 +82,7 @@ class TaskControllerTests(
     fun createTestTask() = Task(
             id = null,
             order = 1,
+            title = "Video title",
             type = TaskType.YOUTUBE,
             url = "https://youtube.com/watch?v=dQw4w9WgXcQ",
             submitter = User(
