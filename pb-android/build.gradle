@@ -12,7 +12,10 @@ buildscript {
     ext {
         kotlin_version = '1.2.10'
         dagger_version = '2.11'
-        lifecycles_version = '1.0.0'
+        lifecycles_version = '1.1.1'
+        work_version = "1.0.0-alpha01"
+        androidx_version = '1.0.0-alpha1'
+        retrofit_version = '2.3.0'
     }
 }
 
@@ -35,7 +38,7 @@ android {
 
     defaultConfig {
         applicationId "polybius.android"
-        minSdkVersion 25
+        minSdkVersion 26
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -60,17 +63,20 @@ android {
 dependencies {
     // common deps
     implementation project(':pb-common-jvm')
-
     // jars
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     // android libs
-    implementation 'com.android.support:appcompat-v7:27.+'
-    implementation 'com.android.support:design:27.+'
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support:design:27.1.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
 
     // ViewModel and LiveData
     implementation "android.arch.lifecycle:extensions:$lifecycles_version"
+    implementation "android.arch.lifecycle:common-java8:$lifecycles_version"
+
+    // WorkManager
+    implementation "android.arch.work:work-runtime:$work_version"
+    implementation "android.arch.work:work-runtime-ktx:$work_version"
 
     // Kotlin specific libs
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.21.2'
@@ -81,15 +87,12 @@ dependencies {
 
     // HTTP
     implementation 'com.squareup.okhttp3:okhttp:3.9.1'
-    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
-    implementation "com.squareup.retrofit2:converter-jackson:2.0.0"
-
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-jackson:$retrofit_version"
     // dependency injection
     compile 'org.koin:koin-android-architecture:0.9.2'
-
     // annotation processing
     kapt 'com.marcinmoskala.activitystarter:activitystarter-compiler:1.11-beta'
-    kapt "android.arch.lifecycle:compiler:$lifecycles_version"
 
     // testing
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {

@@ -27,20 +27,17 @@ class PlaybackControlActivity : BaseActivity() {
         setContentView(R.layout.activity_playback_control)
         setSupportActionBar(toolbar)
         listView.layoutManager = LinearLayoutManager(this)
+        listView.adapter = TaskListAdapter()
 
         viewModel.tasks.observe(this) { tasks ->
-            Log.i(tag(this), "Got new tasks: ${tasks.toString()}")
-            listView.adapter = TaskListAdapter(tasks!!)
-        }
-
-        viewModel.isConnected.observe(this) { isConnected ->
-            Log.i(tag(this), "isConnected: $isConnected")
+            val taskListAdapter = listView.adapter as TaskListAdapter
+            taskListAdapter.tasks = tasks!!.values.toMutableList()
+            taskListAdapter.notifyDataSetChanged()
         }
     }
 
     override fun onResume() {
         super.onResume()
-        Log.i(tag(this), "onResume; isConnected = " + viewModel.isConnected.value?.toString())
         if (viewModel.isConnected.value == false) {
             val intent = createIntent<PolybiusService>(this)
             intent.action = PolybiusService.COMMAND_START
@@ -50,7 +47,6 @@ class PlaybackControlActivity : BaseActivity() {
 
     override fun onStop() {
         super.onStop()
-        Log.i(tag(this), "onStop; isConnected = " + viewModel.isConnected.value?.toString())
         if (viewModel.isConnected.value == true) {
             val intent = createIntent<PolybiusService>(this)
             intent.action = PolybiusService.COMMAND_STOP
@@ -70,10 +66,15 @@ class PlaybackControlActivity : BaseActivity() {
         // as you specify a parent activity in AndroidManifest.xml.
         val id = item.itemId
 
-
-        return if (id == R.id.action_settings) {
-            SettingsActivityStarter.start(this)
-            return true
-        } else super.onOptionsItemSelected(item)
+        when (id) {
+            R.id.action_settings -> {
+                SettingsActivityStarter.start(this)
+                return true
+            }
+            else -> {
+                super.onOptionsItemSelected(item)
+            }
+        }
+        return false
     }
 }

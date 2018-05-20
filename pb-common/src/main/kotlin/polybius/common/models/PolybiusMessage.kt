@@ -57,5 +57,13 @@ data class PolybiusMessage(
                 error = null,
                 name = pausedTask.submittedString()
         )
+
+        fun executorIdle(executorName: String) = PolybiusMessage(
+                messageType = MessageType.EXECUTOR_IDLE,
+                timestamp = DateTime.now().toUnix(),
+                task = null,
+                error = null,
+                name = executorName
+        )
     }
 }

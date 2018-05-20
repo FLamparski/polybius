@@ -8,10 +8,14 @@ import android.widget.TextView
 import polybius.android.R
 import polybius.common.models.Task
 
-class TaskListAdapter(private val tasks : List<Task>) : RecyclerView.Adapter<TaskListAdapter.ViewHolder>() {
+class TaskListAdapter(var tasks : List<Task> = listOf()) : RecyclerView.Adapter<TaskListAdapter.ViewHolder>() {
     class ViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
         val titleView by lazy { view.findViewById<TextView>(R.id.taskTitle) }
         val urlView by lazy { view.findViewById<TextView>(R.id.taskUrl) }
+    }
+
+    init {
+        setHasStableIds(true)
     }
 
     override fun getItemCount() = tasks.size
@@ -24,7 +28,12 @@ class TaskListAdapter(private val tasks : List<Task>) : RecyclerView.Adapter<Tas
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val task = tasks[position]
-        holder.titleView.text = task.id
+        holder.titleView.text = task.title
         holder.urlView.text = task.url
+    }
+
+    override fun getItemId(position: Int): Long {
+        val taskId = tasks[position].id
+        return taskId!!.hashCode().toLong()
     }
 }

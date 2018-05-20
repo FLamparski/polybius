@@ -14,3 +14,5 @@ inline fun <reified T> Retrofit.create(): T = this.create(T::class.java)
 fun <T> LiveData<T>.observe(lifecycleOwner: LifecycleOwner, onChanged: (T?) -> Unit) {
     this.observe(lifecycleOwner, Observer { onChanged(it) })
 }
+
+fun <T> Iterable<T>.first() = this.iterator().let { if (it.hasNext()) it.next() else null }
